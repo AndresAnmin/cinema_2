@@ -73,5 +73,19 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+router.get('/:mediaId', async function (req, res) {
+    try {
+        const media = await Media.findById(req.params.mediaId);
+        if(!media) {
+            return res.status(404).send('Media no existe');
+        }
+        res.send(media);
+    } catch(error){
+        console.log(error);
+        res.status(500).send('Ocurrio un error al consultar media');
+    }
+    
+})
+
+module.exports = router
 
