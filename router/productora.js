@@ -1,11 +1,14 @@
 const { Router } = require('express');
 const Productora = require('../models/Productora'); // Importa el modelo Productora
 const { validationResult, check } = require('express-validator');
+const { validarJWT } = require('../middleware/validar-jwt')
+const {validarRolAdmin } = require('../middleware/validar-rol-Admin')
+
 
 const router = Router();
 
 // Get Listar productoras
-router.get('/', async function (req, res) {
+router.get('/',[validarJWT, validarRolAdmin], async function (req, res) {
     try {
         const productoras = await Productora.find();
         res.send(productoras);
@@ -16,7 +19,7 @@ router.get('/', async function (req, res) {
 });
 
 // POST method para agregar una Productora
-router.post('/', [
+router.post('/', [validarJWT, validarRolAdmin], [
     // Validación del campo 'nombre' (debe estar presente y no puede estar vacío)
     check('nombre', 'El nombre de la productora es obligatorio').not().isEmpty(),
 
@@ -52,7 +55,7 @@ router.post('/', [
 });
 
 // PUT method para actualizar una Productora
-router.put('/:productoraId', [
+router.put('/:productoraId', [validarJWT, validarRolAdmin], [
 
     check('nombre', 'El nombre de la productora es obligatorio').not().isEmpty(),
     check('estado', 'El estado debe ser Activo o Inactivo').isIn(['Activo', 'Inactivo']),

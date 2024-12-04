@@ -1,11 +1,13 @@
 const { Router } = require('express');
 const Tipo = require('../models/Tipo'); // Importa el modelo Tipo
 const { validationResult, check } = require('express-validator');
+const { validarJWT } = require('../middleware/validar-jwt')
+const {validarRolAdmin } = require('../middleware/validar-rol-Admin')
 
 const router = Router();
 
 // Get Listar tipos
-router.get('/', async function (req, res) {
+router.get('/', [validarJWT, validarRolAdmin], async function (req, res) {
     try {
         const tipos = await Tipo.find();
         res.send(tipos);
@@ -16,7 +18,7 @@ router.get('/', async function (req, res) {
 });
 
 // POST method para agregar un Tipo
-router.post('/', [
+router.post('/', [validarJWT, validarRolAdmin],  [
     // Validación del campo 'nombre' (debe estar presente y no puede estar vacío)
     check('nombre', 'El nombre del tipo es obligatorio').not().isEmpty(),
 ], async function (req, res) {
@@ -46,7 +48,7 @@ router.post('/', [
 });
 
 // PUT method para actualizar un Tipo
-router.put('/:tipoId', [
+router.put('/:tipoId', [validarJWT, validarRolAdmin], [
 
     check('nombre', 'El nombre del tipo es obligatorio').not().isEmpty(),
 

@@ -1,11 +1,13 @@
 const { Router } = require('express');
-const Genero = require('../models/Genero'); // Importa el modelo Genero
+const Genero = require('../models/Genero'); 
 const { validationResult, check } = require('express-validator');
+const { validarJWT } = require('../middleware/validar-jwt')
+const {validarRolAdmin } = require('../middleware/validar-rol-Admin')
 
 const router = Router();
 
 // Get Listar géneros
-router.get('/', async function (req, res) {
+router.get('/', [validarJWT, validarRolAdmin], async function (req, res) {
     try {
         const generos = await Genero.find();
         res.send(generos);
@@ -16,7 +18,7 @@ router.get('/', async function (req, res) {
 });
 
 // POST method para agregar un género
-router.post('/', [
+router.post('/', [validarJWT, validarRolAdmin], [
     // Validación del campo 'nombre' (debe estar presente y no puede estar vacío)
     check('nombre', 'El nombre del género es obligatorio').not().isEmpty(),
 
@@ -51,7 +53,7 @@ router.post('/', [
 });
 
 // PUT method para actualizar un Género
-router.put('/:generoId', [
+router.put('/:generoId', [validarJWT, validarRolAdmin], [
     // Validación del campo 'nombre' (debe estar presente y no puede estar vacío)
     check('nombre', 'El nombre del género es obligatorio').not().isEmpty(),
 

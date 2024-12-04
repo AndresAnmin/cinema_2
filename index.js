@@ -15,6 +15,8 @@ getConection();
 app.use(express.json());
 
 //rutas
+app.use('/Auntenticacion', require('./router/Auntenticacion'));
+app.use('/usuario', require('./router/usuario'));
 app.use('/director', require('./router/director'));
 app.use('/genero', require('./router/genero'));
 app.use('/productora', require('./router/productora'));
