@@ -9,5 +9,5 @@ const directorSchema = new Schema({
     fechaActualizacion: { type: Date, required: true },
 });
 
-// Exportar el modelo para usarlo en otras partes de la aplicación
+// Exportar el modelo
 module.exports = model('Director', directorSchema);
