@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-//Nombre, Estado (Activo o Inactivo), Fecha creación, Fecha actualización
+//Nombre, Estado (Activo o Inactivo), Fecha creacion, Fecha actualizacion
 
 const directorSchema = new Schema({
     nombre: { type: String, required: true },
